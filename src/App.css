@@ -1,38 +1,123 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  overflow: hidden;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: 100vh;
+  background-color: #5f7161;
+}
+section .runway {
+  position: relative;
+  width: 500px;
+  height: 100vh;
+  background-color: #73777b;
+  border-right: 20px solid #212121;
+  border-left: 20px solid #212121;
+  transition: transform 1s;
+  transition-delay: 1s;
+  transform-origin: top;
+}
+/* !take off runway animation */
+section:active .runway {
+  transform: scaleX(0.7) scaleY(0);
+  transition-delay: 0s;
+  transform-origin: bottom;
+}
+section .runway::before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 20px;
+  height: 100%;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(
+    transparent 0%,
+    transparent 50%,
+    #f9f9f9 50%,
+    #f9f9f9 100%
+  );
+  background-size: 20px 400px;
+  animation: animatedRunway 0.5s linear infinite;
+}
+/* !add speed click and hold */
+section:active .runway::before {
+  animation: animatedRunway 0.15s linear infinite;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes animatedRunway {
+  0% {
+    background-position-y: 0px;
   }
-  to {
-    transform: rotate(360deg);
+  100% {
+    background-position-y: 400px;
+  }
+}
+.plane {
+  position: absolute;
+  pointer-events: none;
+  bottom: 100px;
+  max-width: 280px;
+  filter: drop-shadow(10px 10px 0 #3d3c42);
+  transition: 5s;
+}
+section:active .plane {
+  max-width: 580px;
+  filter: drop-shadow(200px 200px 0 rgba(0, 0, 0, 0));
+}
+/* !cloud */
+.clouds {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s;
+  transition-delay: 0s;
+}
+/* !clouds animation */
+section:active .clouds {
+  opacity: 1;
+  transition-delay: 1s;
+}
+.clouds img {
+  position: absolute;
+  left: 0;
+  width: 800px;
+  animation: animatedCloud 4s linear infinite;
+  animation-delay: calc(-1.5s * var(--i));
+}
+.cloudsCopy {
+  right: 0;
+  transform: rotate(180deg);
+}
+.cloudsCopy img {
+  animation: animatedCloudCopy 4s linear infinite;
+  animation-delay: calc(-1.5s * var(--i));
+}
+@keyframes animatedCloud {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes animatedCloudCopy {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
   }
 }
